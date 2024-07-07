@@ -69,15 +69,19 @@ $app->post('/users', function (Request $request, Response $response, $args) use 
             return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
         }
 
-        $sql = "INSERT INTO user (full_name, email, password, date_of_birth, phone_number) VALUES (:full_name, :email, :password, :date_of_birth, :phone_number)";
+        $sql = "INSERT INTO user (full_name, email, password, role, date_of_birth, phone_number) VALUES (:full_name, :email, :password, :role, :date_of_birth, :phone_number)";
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(':full_name', $full_name);
         $stmt->bindValue(':email', $email);
         $stmt->bindValue(':password', $password);
+        $stmt->bindValue(':role', 'user');
         $stmt->bindValue(':date_of_birth', $date_of_birth);
         $stmt->bindValue(':phone_number', $phone_number);
         $stmt->execute();
-        $response->getBody()->write(json_encode(["message" => "User created successfully"]));
+
+        $user_id = $conn->lastInsertId();
+
+         $response->getBody()->write(json_encode(["message" => "User created successfully", 'user_id' => $user_id, 'email' => $email]));
         return $response->withHeader('Content-Type', 'application/json')->withStatus(201);
     } catch (PDOException $e) {
         $response->getBody()->write(json_encode(["error" => "Error creating user: " . $e->getMessage()]));
@@ -159,7 +163,7 @@ $app->post('/users/login', function ($request, $response, $args) {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($user && password_verify($password, $user['password'])) {
-        $response->getBody()->write(json_encode(['success' => true, 'message' => 'Login successful', 'user_id' => $user['user_id'], 'email' => $user['email']]));
+        $response->getBody()->write(json_encode(['success' => true, 'message' => 'Login successful', 'user_id' => $user['user_id'], 'email' => $user['email'], 'role' => $user['role']]));
         return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
     } else {
         $response->getBody()->write(json_encode(['success' => false, 'message' => 'Invalid email or password']));
