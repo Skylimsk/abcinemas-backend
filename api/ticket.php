@@ -184,11 +184,11 @@ return function (App $app) {
         $conn = $db->connect();
         if ($conn) {
             $sql = "SELECT b.booking_id, b.movie_id, m.title AS movie_title, b.branch, b.hall, b.show_time, b.show_date, 
-                    bd.seat_row, bd.seat_number, bd.ticket_type, bd.price
-                    FROM bookings b
-                    JOIN booking_details bd ON b.booking_id = bd.booking_id
-                    JOIN movies m ON b.movie_id = m.id
-                    WHERE b.booking_id = :booking_id";
+                bd.seat_row, bd.seat_number, bd.price
+                FROM bookings b
+                JOIN booking_details bd ON b.booking_id = bd.booking_id
+                JOIN movies m ON b.movie_id = m.id
+                WHERE b.booking_id = :booking_id";
             $stmt = $conn->prepare($sql);
             $stmt->bindValue(':booking_id', $booking_id);
             $stmt->execute();
@@ -200,6 +200,7 @@ return function (App $app) {
             return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
         }
     });
+
 
     // Fetch blocked seats
     $app->get('/blocked-seats', function (Request $request, Response $response, $args) {
