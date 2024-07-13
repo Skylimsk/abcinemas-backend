@@ -1,13 +1,11 @@
 <?php
-class db
-{
+class db {
     private $host = 'localhost';
     private $user = 'root';
     private $password = '';
     private $dbname = 'abcinemas';
 
-    function connect()
-    {
+    public function connect() {
         try {
             $mysql_connect_str = "mysql:host=$this->host;dbname=$this->dbname";
             $dbConnection = new PDO($mysql_connect_str, $this->user, $this->password);
@@ -15,6 +13,7 @@ class db
             return $dbConnection;
         } catch (PDOException $e) {
             echo "Connection failed: " . $e->getMessage();
+            return null;  // Return null on failure to ensure proper error handling
         }
     }
 }

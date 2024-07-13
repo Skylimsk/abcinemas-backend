@@ -1,4 +1,5 @@
 <?php
+
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
@@ -21,10 +22,12 @@ $app->add(new CorsMiddleware([
 require_once './config.php';
 require './users.php';
 
+// Add the routes from the ticket.php file
+(require __DIR__ . '/../api/ticket.php')($app);
+
 $app->get('/', function (Request $request, Response $response, $args) {
     $response->getBody()->write("Hello world!");
     return $response;
 });
-
 
 $app->run();

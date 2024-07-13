@@ -2,7 +2,7 @@
 CREATE DATABASE abcinemas;
 
 -- Switch to the newly created database
-USE abcinema;
+USE abcinemas;
 
 -- Create the user table
 CREATE TABLE user (
