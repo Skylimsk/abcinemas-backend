@@ -201,6 +201,30 @@ return function (App $app) {
         }
     });
 
+    $app->get('/users/bookings/{id}', function (Request $request, Response $response, $args) {
+        $user_id = $args['id'];
+
+        $db = new db();
+        $conn = $db->connect();
+        if ($conn) {
+            $sql = "SELECT b.booking_id, b.movie_id, m.title AS movie_title, b.branch, b.hall, b.show_time, b.show_date, 
+                bd.seat_row, bd.seat_number, bd.price
+                FROM bookings b
+                JOIN booking_details bd ON b.booking_id = bd.booking_id
+                JOIN movies m ON b.movie_id = m.id
+                WHERE b.user_id = :user_id";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindValue(':user_id', $user_id);
+            $stmt->execute();
+            $bookingDetails = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $response->getBody()->write(json_encode(['bookingDetails' => $bookingDetails]));
+            return $response->withHeader('Content-Type', 'application/json');
+        } else {
+            $response->getBody()->write(json_encode(['error' => 'Database connection failed']));
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
+        }
+    });
+
 
     // Fetch blocked seats
     $app->get('/blocked-seats', function (Request $request, Response $response, $args) {
