@@ -200,8 +200,6 @@ return function (App $app) {
         }
     });
 
-<<<<<<< HEAD
-=======
     $app->get('/users/bookings/{id}', function (Request $request, Response $response, $args) {
         $user_id = $args['id'];
 
@@ -226,8 +224,6 @@ return function (App $app) {
         }
     });
 
-
->>>>>>> ef22a3bb0e0c004fd826ec345235be2792ed6808
     // Fetch blocked seats
     $app->get('/blocked-seats', function (Request $request, Response $response, $args) {
         $params = $request->getQueryParams();
