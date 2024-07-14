@@ -1,3 +1,11 @@
+CREATE TABLE `rating_reviews` (
+  `review_id` int(11) NOT NULL AUTO_INCREMENT,
+  `movieID` int(11) NOT NULL,
+  `rating` int(1) NOT NULL CHECK (`rating` BETWEEN 1 AND 5),
+  `review` text,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`review_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `bookings` (
   `booking_id` int(11) NOT NULL,
@@ -117,6 +125,27 @@ CREATE TABLE `movies` (
 --
 -- Dumping data for table `movies`
 --
+INSERT INTO `movies` (`id`, `title`, `description`, `genre`, `duration`) VALUES
+(1, 'How to Make Millions Before Grandma Dies', 'A heartwarming drama with a unique premise.', 'Drama', 127),
+(2, 'Inside Out 2', 'The emotions are back in a heartfelt sequel.', 'Animation', 97),
+(3, 'Bad Boys Ride or Die', 'High-speed chases and explosive action.', 'Action', 115),
+(4, 'I Not Stupid 3', 'A touching drama about family and education.', 'Drama', 133),
+(5, 'Gold', 'A riveting sports drama with intense competition.', 'Sports', 126),
+(6, 'Fly Me to The Moon', 'A romantic tale of love and dreams.', 'Romance', 132),
+(7, 'Indian 2', 'High-octane action sequences and thrilling plot twists.', 'Action', 179),
+(8, 'Longlegs', 'A spine-chilling horror with unexpected scares.', 'Horror', 101),
+(9, 'Detective Conan: The Million-Dollar Pentagram', 'Detective Conan unravels another complex mystery.', 'Animation', 111),
+(10, 'Twisters', 'An action-packed adventure with natural disasters.', 'Action', 122),
+(11, 'Despicable Me 4', 'The Minions are back in a hilarious new adventure.', 'Animation', 94),
+(12, 'Customs Frontline', 'A gripping action movie about customs officers.', 'Action', 116),
+(13, 'A Quiet Place: Day One', 'A suspenseful drama set in a silent world.', 'Drama', 100),
+(14, 'Crisis Negotiator', 'Thrilling negotiations and intense action.', 'Action', 121),
+(15, 'Kalki 2898 AD (Tamil)', 'Futuristic action in a sci-fi setting.', 'Action', 181),
+(16, 'Project Silence', 'Silent yet action-packed with a gripping plot.', 'Action', 97),
+(17, 'Welcome to My Side', 'A deep drama exploring personal relationships.', 'Drama', 103),
+(18, 'Ipar Adalah Maut', 'A dramatic narrative filled with intense moments.', 'Drama', 132),
+(19, 'Marni: The Story of Wawa Gombel', 'Horror rooted in folklore and dark myths.', 'Horror', 120),
+(20, 'Haunted Universities 3', 'University campuses plagued by supernatural events.', 'Horror', 119);
 
 INSERT INTO `movies` (`id`, `title`, `description`, `genre`, `duration`) VALUES
 (21, 'Gold', 'A riveting sports drama with intense competition.', 'Sports', 126),
@@ -1193,6 +1222,11 @@ INSERT INTO `user` (`user_id`, `password`, `email`, `full_name`, `role`, `date_o
 --
 -- Indexes for table `bookings`
 --
+ALTER TABLE 'rating_reviews'
+  ADD PRIMARY KEY ('rating_id'),
+  ADD KEY `movieID` (`movie_id`);
+
+
 ALTER TABLE `bookings`
   ADD PRIMARY KEY (`booking_id`),
   ADD KEY `user_id` (`user_id`),
