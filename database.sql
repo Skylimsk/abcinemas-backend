@@ -7,6 +7,28 @@ CREATE TABLE `rating_reviews` (
   PRIMARY KEY (`review_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+INSERT INTO `rating_reviews` (`movieID`, `rating`, `review`, `created_at`) VALUES
+(1, 5, 'An amazing experience!', '2024-07-14 10:00:00'),
+(2, 4, 'Very touching and emotional.', '2024-07-14 11:00:00'),
+(3, 3, 'Action scenes were great, but the story was lacking.', '2024-07-14 12:00:00'),
+(4, 4, 'Really funny and enjoyable.', '2024-07-14 13:00:00'),
+(5, 5, 'Incredible movie, loved every minute!', '2024-07-14 14:00:00'),
+(6, 4, 'Cute and charming.', '2024-07-14 15:00:00'),
+(7, 5, 'Fantastic story and visuals.', '2024-07-14 16:00:00'),
+(8, 3, 'Somewhat scary but overall good.', '2024-07-14 17:00:00'),
+(9, 4, 'Engaging mystery, kept me on the edge of my seat.', '2024-07-14 18:00:00'),
+(10, 4, 'Thrilling and exciting.', '2024-07-14 19:00:00'),
+(11, 4, 'Hilarious and entertaining.', '2024-07-14 20:00:00'),
+(12, 3, 'Interesting plot but slow at times.', '2024-07-14 21:00:00'),
+(13, 5, 'Suspenseful and gripping.', '2024-07-14 22:00:00'),
+(14, 4, 'Intense and captivating.', '2024-07-14 23:00:00'),
+(15, 4, 'Great action sequences.', '2024-07-15 00:00:00'),
+(16, 4, 'Unique concept and well executed.', '2024-07-15 01:00:00'),
+(17, 4, 'Emotionally powerful.', '2024-07-15 02:00:00'),
+(18, 3, 'Creepy and unsettling.', '2024-07-15 03:00:00'),
+(19, 4, 'Thought-provoking and dramatic.', '2024-07-15 04:00:00'),
+(20, 3, 'Supernatural elements were well done.', '2024-07-15 05:00:00');
+
 CREATE TABLE `bookings` (
   `booking_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
