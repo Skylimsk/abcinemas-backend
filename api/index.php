@@ -21,6 +21,7 @@ $app->add(new CorsMiddleware([
 
 require_once './config.php';
 require './users.php';
+require './rating_reviews.php';
 
 // Add the routes from the ticket.php file
 (require __DIR__ . '/../api/ticket.php')($app);
