@@ -7,6 +7,24 @@ use Slim\App;
 $db = new db();
 
 return function (App $app) {
+    // Fetch movies
+    $app->get('/movies', function (Request $request, Response $response) {
+        $db = new db();
+        $conn = $db->connect();
+
+        if (!$conn) {
+            $response->getBody()->write(json_encode(['error' => 'Database connection failed']));
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
+        }
+
+        $sql = "SELECT * FROM movies";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $movies = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $response->getBody()->write(json_encode($movies));
+        return $response->withHeader('Content-Type', 'application/json');
+    });
+
     // Create a new review
     $app->post('/reviews', function (Request $request, Response $response) {
         $db = new db();
@@ -65,7 +83,7 @@ return function (App $app) {
     });
 
     // Update a review
-    $app->put('/reviews/{id}', function (Request $request, Response $response, $args) {
+    $app->put('/reviews', function (Request $request, Response $response) {
         $db = new db();
         $conn = $db->connect();
 
@@ -74,8 +92,13 @@ return function (App $app) {
             return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
         }
 
-        $review_id = $args['id'];
         $data = $request->getParsedBody();
+        if (!isset($data['review_id']) || !isset($data['rating']) || !isset($data['review'])) {
+            $response->getBody()->write(json_encode(['error' => 'All fields are required for updating']));
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
+        }
+
+        $review_id = $data['review_id'];
         $rating = $data['rating'];
         $review = $data['review'];
 
@@ -95,7 +118,7 @@ return function (App $app) {
     });
 
     // Delete a review
-    $app->delete('/reviews/{id}', function (Request $request, Response $response, $args) {
+    $app->delete('/reviews', function (Request $request, Response $response) {
         $db = new db();
         $conn = $db->connect();
 
@@ -104,7 +127,13 @@ return function (App $app) {
             return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
         }
 
-        $review_id = $args['id'];
+        $params = $request->getQueryParams();
+        if (!isset($params['review_id'])) {
+            $response->getBody()->write(json_encode(['error' => 'Review ID is required for deletion']));
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
+        }
+
+        $review_id = $params['review_id'];
 
         $sql = "DELETE FROM rating_reviews WHERE review_id = :review_id";
         $stmt = $conn->prepare($sql);
@@ -119,4 +148,3 @@ return function (App $app) {
         }
     });
 };
-?>
