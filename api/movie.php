@@ -69,7 +69,7 @@ return function (App $app) {
     });
 
     // Delete a movie
-    $app->delete('/movies/{id}', function (Request $request, Response $response, $args) use ($db) {
+    $app->delete('/movies/{id}', function (Request $request, Response $response, $args) {
         try {
 
             $db = new db();
