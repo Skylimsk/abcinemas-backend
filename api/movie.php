@@ -24,7 +24,7 @@ return function (App $app) {
         $genre = $data['genre'];
         $duration = $data['duration'];
 
-        $sql = "INSERT INTO rating_reviews (id, title, description, genre, duration) VALUES (:id, :title, :description, :genre, :duration)";
+        $sql = "INSERT INTO movies (id, title, description, genre, duration) VALUES (:id, :title, :description, :genre, :duration)";
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(':id', $movieID);
         $stmt->bindValue(':title', $title);
@@ -44,6 +44,7 @@ return function (App $app) {
      // Update a review
     $app->put('/movies/{id}', function (Request $request, Response $response, array $args) {
         try {
+            $db = new db();
             $conn = $db->connect();
             $data = $request->getParsedBody();
             $id = $data['id'];
@@ -51,7 +52,7 @@ return function (App $app) {
             $description = $data['description'];
             $genre = $data['genre'];
             $duration = $data['duration'];
-            $sql = "UPDATE user SET id = :id, title = :title, description = :description, genre = :genre, duration = :duration WHERE movieID = :id";
+            $sql = "UPDATE movies SET id = :id, title = :title, description = :description, genre = :genre, duration = :duration WHERE movieID = :id";
             $stmt = $conn->prepare($sql);
             $stmt->bindValue(':id', $id);
             $stmt->bindValue(':title', $title);
@@ -70,6 +71,9 @@ return function (App $app) {
     // Delete a movie
     $app->delete('/movies/{id}', function (Request $request, Response $response, $args) use ($db) {
         try {
+
+            $db = new db();
+
             $id = $args['id'];
             $conn = $db->connect();
             $sql = "DELETE FROM movies WHERE id = :id";
